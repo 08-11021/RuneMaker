@@ -45,8 +45,10 @@ food = 'f12'
 foodLasting=264 #seconds brown mushroom
 runeSpell = 'f11'
 runeMana = 985.0 # SD cost
-runeLasting = int(math.ceil(runeMana/(totalMana/14400)))
-roh = 'f10'
+#runeLasting = int(math.ceil(runeMana/(totalMana/14400)))
+runeLasting = int(math.floor(runeMana/(totalMana/14400)))
+delay = (runeMana/(totalMana/14400))-math.floor(runeMana/(totalMana/14400))
+adjust = 0.0
 rohLasting = 450 #seconds
 softBoots = 'f8'
 softBootsLasting = 14400 #seconds
@@ -59,8 +61,14 @@ time.sleep(2)
 pyautogui.press(roh)
 
 while True:
+    if adjust > 1:
+        runeLasting = runeLasting+1
     if seconds%runeLasting == 0:
-        pyautogui.press(runeSpell)
+        pyautogui.press(runeSpell)        
+        if adjust > 1:
+            runeLasting = runeLasting-1
+            adjust = adjust - 1.0
+        adjust = adjust + delay
     if seconds%rohLasting == 0:
         pyautogui.press(roh)
     if seconds%foodLasting == 0:
